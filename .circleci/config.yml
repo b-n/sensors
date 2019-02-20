@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    docker:
+      - image: circleci/node:11.9
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - deps-{{ checksum "web/package.json" }}
+      - run:
+          name: yarn-install
+          command: yarn install
+          working_directory: ~/repo/web
+      - save_cache:
+          paths:
+            - web/node_modules
+          key: deps-{{ checksum "web/package.json" }}
+      - run:
+          name: build
+          command: yarn run build
+          working_directory: ~/repo/web
+      - run:
+          name: gh-pages
+          command: ./scripts/deploy-ghpages.sh web/build
