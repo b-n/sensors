@@ -11,7 +11,8 @@ import { extent } from 'd3-array';
 const Graph = (props) => {
   const { data, width } = props;
 
-  const dayData = Object.keys(data.data).map(key => ({ date: key, data: data.data[key]}));
+  const dayData = Object.keys(data.data).map(key => ({ date: key, data: data.data[key]}))
+    .sort((a, b) => a.date >= b.date ? a.date === b.date ? 0 : -1 : 1);
 
   const dataExtent = extent(
     Object.keys(data.data)
