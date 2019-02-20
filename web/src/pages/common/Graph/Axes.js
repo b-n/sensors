@@ -13,7 +13,6 @@ const XAxis = (props) => {
 
   return (
     <Group transform={transform} className={className}>
-      <Line x1={0} y1={0} x2={width} y2={0} stroke='black' strokeWidth={1} className="axis"/>
       {dates.map((d, i) => {
         const x = scale(d);
         return (
@@ -31,12 +30,13 @@ const XAxis = (props) => {
           >
             {format(d, 'HH:mm')}
           </Text>
-          {gridline === undefined
+          {gridline === undefined || i === 0
             ? null
             : (<Line x1={x} x2={x} y1={-gridline} y2={0} className="gridline"/>)}
         </Fragment>
         );
       })}
+      <Line x1={0} y1={0} x2={width} y2={0} stroke='black' strokeWidth={1} className="axis"/>
     </Group>
   )
 }
@@ -44,14 +44,19 @@ const XAxis = (props) => {
 const YAxis = (props) => {
   const { scale, transform, gridline, className } = props;
 
-  const projects = scale.domain();
+  const domain = scale.domain();
+
+  const yMin = domain[0];
+  const yRange = domain[1]-domain[0];
+  const ticks = 6;
+
   const range = scale.range();
 
   return (
     <Group transform={transform} className={className}>
-      <Line x1={0} x2={0} y1={range[0]} y2={range[1]} stroke="black" strokeWidth={1} />
-      {projects.map((project, i) => {
-        const y = scale(project);
+      {new Array(ticks).fill(0).map((x, i) => {
+        const yVal = (yMin + i*yRange/(ticks - 1)) | 0;
+        const y = scale(yVal);
         return (
           <Fragment key={i}>
             <Line
@@ -70,16 +75,17 @@ const YAxis = (props) => {
               textAnchor='end'
               alignmentBaseline='central'
             >
-              {project}
+              {yVal}
             </Text>
             {
-              gridline === undefined
+              gridline === undefined || i === 0
                 ? null
                 : (<Line x1={0} x2={gridline} y1={y} y2={y} className="gridline"/>)
             }
           </Fragment>
         )
       })}
+      <Line x1={0} x2={0} y1={range[0]} y2={range[1]} stroke="black" strokeWidth={1} />
     </Group>
   );
 }
