@@ -1,0 +1,103 @@
+service: sensors
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  memorySize: 128
+  stage: dev
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:Query
+      Resource: "arn:aws:dynamodb:eu-central-1:*:*"
+  environment:
+    SETUP_TABLE: ${self:service}-setup-${self:provider.stage}
+    DATA_TABLE: ${self:service}-data-${self:provider.stage}
+
+functions:
+  iot:
+    handler: src/handlers/iot.handler
+    events:
+      - iot:
+          sql: "select timestamp, thing, oldPPM, newPPM from 'co2-reading'"
+  iot-test:
+    handler: src/handlers/iot.test
+    events:
+      - http:
+          path: iot
+          method: post
+  thing-detail:
+    handler: src/handlers/sensor-get.handler
+    events:
+      - http:
+          path: thing/{thing}
+          method: get
+          cors: true
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: 'yarn'
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+  serverless-offline:
+    port: 4000
+
+package:
+  individually: true
+
+resources:
+  Resources:
+    DataTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: "Retain"
+      Properties:
+        TableName: ${self:provider.environment.DATA_TABLE}
+        AttributeDefinitions:
+          -
+            AttributeName: thing
+            AttributeType: S
+          -
+            AttributeName: summaryDate
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: thing
+            KeyType: HASH
+          -
+            AttributeName: summaryDate
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    SetupTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: "Retain"
+      Properties:
+        TableName: ${self:provider.environment.SETUP_TABLE}
+        AttributeDefinitions:
+          -
+            AttributeName: thing
+            AttributeType: S
+
+        KeySchema:
+          -
+            AttributeName: thing
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
