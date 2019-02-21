@@ -27,7 +27,6 @@ const DayGraph = (props) => {
   const xScale = useTimeScale({ width, from, to });
 
   const yMin = yScale.domain()[0];
-  console.log(yMin);
 
   return (
     <Group transform={{translate: [x, y]}}>
@@ -55,7 +54,7 @@ const DayGraph = (props) => {
             return (
               <Fragment key={key}>
                 <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} />
-                <Circle cx={x} cy={yScale(mean)} r={2} fill={color} />
+                <Circle cx={x} cy={yScale(mean)} r={3} fill={color} stroke="grey" strokeWidth="1px"/>
               </Fragment>
             );
           })}
