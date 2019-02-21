@@ -21,9 +21,10 @@ const useLinearScale = ({ from, to, height }) => {
   useEffect(() => {
     setScale({
       scale: scale.scale
+        .domain([from, to ])
         .range([height, 0])
     })
-  }, [height]);
+  }, [from, to, height]);
 
   return scale.scale;
 }

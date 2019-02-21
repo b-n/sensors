@@ -7,7 +7,6 @@ const Home = (props) => {
   const data = useSensorData('breather');  
 
   const width = useWindowWidth();
-  console.log(data);
 
   return (
     <div>

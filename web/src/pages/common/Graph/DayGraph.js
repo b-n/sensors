@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { Collection } from '@potion/layout'
-import { Group, Text, Circle } from '@potion/element'
+import { Group, Text, Circle, Line } from '@potion/element'
 import { addHours, format } from 'date-fns'
 
 import { XAxis, YAxis } from './Axes'
@@ -27,13 +27,7 @@ const DayGraph = (props) => {
   const xScale = useTimeScale({ width, from, to });
 
   const yMin = yScale.domain()[0];
-
-  const keyedData = data.map((d,i) => ({
-    key: '' + i,
-    ...d,
-    previousPPM: i === 0 ? d.ppm : data[i-1].ppm,
-    previousTimestamp: i === 0 ? d.timestamp : data[i-1].timestamp
-  }));
+  console.log(yMin);
 
   return (
     <Group transform={{translate: [x, y]}}>
@@ -51,17 +45,17 @@ const DayGraph = (props) => {
       />
       <Group className="plot">
         <Collection
-          data={keyedData}
-          nodeEnter={d => ({ ...d, ppm: yMin, previousPPM: yMin })}
+          data={data}
+          nodeEnter={d => ({ ...d, mean: yMin, upper: yMin, lower: yMin })}
           animate
         >
-          {nodes => nodes.map(({key, ppm, timestamp}) => {
-            const x1 = xScale(new Date(timestamp));
-            const y1 = yScale(ppm);
-            const color = ppmColorScale(ppm);
+          {nodes => nodes.map(({key, date, mean, lower, upper}) => {
+            const x = xScale(new Date(date));
+            const color = ppmColorScale(mean);
             return (
               <Fragment key={key}>
-                <Circle cx={x1} cy={y1} r={2} fill={color} />
+                <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} />
+                <Circle cx={x} cy={yScale(mean)} r={2} fill={color} />
               </Fragment>
             );
           })}
