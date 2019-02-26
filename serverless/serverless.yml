@@ -9,7 +9,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   memorySize: 128
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: eu-central-1
   iamRoleStatements:
     - Effect: "Allow"
@@ -21,26 +21,6 @@ provider:
   environment:
     SETUP_TABLE: ${self:service}-setup-${self:provider.stage}
     DATA_TABLE: ${self:service}-data-${self:provider.stage}
-
-functions:
-  iot:
-    handler: src/handlers/iot.handler
-    events:
-      - iot:
-          sql: "select timestamp, thing, oldPPM, newPPM from 'co2-reading'"
-  iot-test:
-    handler: src/handlers/iot.test
-    events:
-      - http:
-          path: iot
-          method: post
-  thing-detail:
-    handler: src/handlers/sensor-get.handler
-    events:
-      - http:
-          path: thing/{thing}
-          method: get
-          cors: true
 
 custom:
   webpack:
@@ -59,6 +39,28 @@ custom:
 
 package:
   individually: true
+
+functions:
+  iot:
+    handler: src/handlers/iot.handler
+    events:
+      - iot:
+          sql: >-
+            select timestamp, thing, oldPPM, newPPM
+            from 'sensor-reading-${self:provider.stage}'
+  iot-test:
+    handler: src/handlers/iot.test
+    events:
+      - http:
+          path: iot
+          method: post
+  thing-detail:
+    handler: src/handlers/sensor-get.handler
+    events:
+      - http:
+          path: thing/{thing}
+          method: get
+          cors: true
 
 resources:
   Resources:
@@ -101,3 +103,50 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    SensorIoTEvent:
+      Type: "AWS::IoT::TopicRule"
+      Properties:
+        RuleName: SensorReading_${self:provider.stage}
+        TopicRulePayload:
+          Description: Take readings things that are sensors, and republish them to a better topic
+          RuleDisabled: "false"
+          Sql: >-
+            select timestamp, topic(3) as thing, previous.state.reported.ppm as oldPPM, current.state.reported.ppm as newPPM
+            from '$aws/things/+/shadow/update/documents'
+            where previous.state.reported.ppm <> current.state.reported.ppm
+          Actions:
+            -
+              Republish:
+                Topic: sensor-reading-${self:provider.stage}
+                RoleArn:
+                  Fn::GetAtt: 
+                    - IoTRole
+                    - Arn
+    IoTRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:service}-${self:provider.stage}-${self:provider.region}-iotRole
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - iot.amazonaws.com
+            Action:
+            - sts:AssumeRole
+        Path: "/"
+        Policies:
+          -
+            PolicyName:
+              Fn::Join:
+                - "-"
+                - - ${self:provider.stage}
+                  - ${self:service}
+                  - iot
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                -
+                  Effect: "Allow"
+                  Action: iot:Publish
+                  Resource: "arn:aws:iot:*:*:topic/*"
