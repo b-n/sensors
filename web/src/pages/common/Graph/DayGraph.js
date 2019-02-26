@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { Collection } from '@potion/layout'
-import { Group, Text, Circle, Line } from '@potion/element'
+import { Group, Text, Circle, Line, Rect } from '@potion/element'
 import { addHours, format } from 'date-fns'
 import { timeHour } from 'd3-time'
 import { timeFormat } from 'd3-time-format'
@@ -30,6 +30,9 @@ const DayGraph = (props) => {
 
   const yMin = yScale.domain()[0];
 
+  const clipId = `clip-${date}`;
+  const clipPath = `url(#${clipId})`;
+
   return (
     <Group transform={{translate: [x, y]}}>
       <Text y={-2} x={5}>{format(date, 'ddd\tDD\tMMM')}</Text>
@@ -48,6 +51,9 @@ const DayGraph = (props) => {
         ticks={7}
       />
       <Group className="plot">
+        <clipPath id={clipId}>
+          <Rect width={width} height={height} />
+        </clipPath>
         <Collection
           data={data}
           nodeEnter={d => ({ ...d, median: yMin, upper: yMin, lower: yMin })}
@@ -57,8 +63,8 @@ const DayGraph = (props) => {
             const x = xScale(new Date(date));
             return (
               <Fragment key={key}>
-                <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} />
-                <Circle cx={x} cy={yScale(median)} r={3} fill={ppmColorScale(median)} stroke="grey" strokeWidth="1px"/>
+                <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} clipPath={clipPath}/>
+                <Circle cx={x} cy={yScale(median)} r={3} fill={ppmColorScale(median)} stroke="grey" strokeWidth="1px" clipPath={clipPath}/>
               </Fragment>
             );
           })}
