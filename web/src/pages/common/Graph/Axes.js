@@ -4,7 +4,7 @@ import { axisLeft, axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 
 const XAxis = (props) => {
-  const { scale, transform, gridline, className, ticks } = props;
+  const { scale, transform, gridline, className, ticks, tickFormat } = props;
 
   const axisEl = useRef(null);
 
@@ -14,6 +14,7 @@ const XAxis = (props) => {
         axisBottom()
         .scale(scale)
         .ticks(ticks)
+        .tickFormat(tickFormat)
       );
   }, [ ...scale.domain(), ...scale.range() ]);
 
@@ -28,7 +29,7 @@ const XAxis = (props) => {
 }
 
 const YAxis = (props) => {
-  const { scale, transform, gridline, className, ticks } = props;
+  const { scale, transform, gridline, className, ticks, tickFormat } = props;
 
   const axisEl = useRef(null);
 
@@ -36,8 +37,9 @@ const YAxis = (props) => {
     select(axisEl.current)
       .call(
         axisLeft()
-          .scale(scale)
-          .ticks(ticks)
+        .scale(scale)
+        .ticks(ticks)
+        .tickFormat(tickFormat)
       );
   }, [...scale.domain(), ...scale.range() ]);
 

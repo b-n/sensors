@@ -3,6 +3,7 @@ import { Collection } from '@potion/layout'
 import { Group, Text, Circle, Line } from '@potion/element'
 import { addHours, format } from 'date-fns'
 import { timeHour } from 'd3-time'
+import { timeFormat } from 'd3-time-format'
 
 import { XAxis, YAxis } from './Axes'
 
@@ -22,8 +23,8 @@ const DayGraph = (props) => {
     ppmColorScale
   } = props;
 
-  const from = addHours(date, 0),
-        to = addHours(date, 24);
+  const from = addHours(date, 6),
+        to = addHours(date, 20);
 
   const xScale = useTimeScale({ width, from, to });
 
@@ -37,7 +38,8 @@ const DayGraph = (props) => {
         transform={{translate: [0, height]}}
         gridline={height}
         className="x-axis"
-        ticks={timeHour.every(2)}
+        ticks={timeHour.every(1)}
+        tickFormat={timeFormat('%H:%M')}
       />
       <YAxis
         scale={yScale}
