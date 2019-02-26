@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Collection } from '@potion/layout'
 import { Group, Text, Circle, Line } from '@potion/element'
 import { addHours, format } from 'date-fns'
+import { timeHour } from 'd3-time'
 
 import { XAxis, YAxis } from './Axes'
 
@@ -36,25 +37,26 @@ const DayGraph = (props) => {
         transform={{translate: [0, height]}}
         gridline={height}
         className="x-axis"
+        ticks={timeHour.every(2)}
       />
       <YAxis
         scale={yScale}
         gridline={width}
         className="y-axis"
+        ticks={7}
       />
       <Group className="plot">
         <Collection
           data={data}
-          nodeEnter={d => ({ ...d, mean: yMin, upper: yMin, lower: yMin })}
+          nodeEnter={d => ({ ...d, median: yMin, upper: yMin, lower: yMin })}
           animate
         >
-          {nodes => nodes.map(({key, date, mean, lower, upper}) => {
+          {nodes => nodes.map(({key, date, median, lower, upper}) => {
             const x = xScale(new Date(date));
-            const color = ppmColorScale(mean);
             return (
               <Fragment key={key}>
                 <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} />
-                <Circle cx={x} cy={yScale(mean)} r={3} fill={color} stroke="grey" strokeWidth="1px"/>
+                <Circle cx={x} cy={yScale(median)} r={3} fill={ppmColorScale(median)} stroke="grey" strokeWidth="1px"/>
               </Fragment>
             );
           })}
