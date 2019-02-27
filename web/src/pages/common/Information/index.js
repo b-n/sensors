@@ -24,8 +24,8 @@ const Information = () => {
     <h1>Information</h1>
     <p>
       The graph to the left measures the average Carbon Dioxide (CO<sub>2</sub>)
-      concentration near the sensor in the office. And reads the values in Parts
-      Per Million (ppm)
+      concentration near the sensor in the office. The sensor reads the values
+      in parts per million (ppm).
     </p>
     <p>
       CO<sub>2</sub> is a colorless gas with a density about 60% higher than that
@@ -41,7 +41,9 @@ const Information = () => {
       kill spider mites and whiteflies in a greenhouse.
     </p>
     <p>
-      Relative to 600 ppm, at 1,000 ppm CO2, moderate and statistically significant
+      A few studies have found linkages in increased CO<sub>2</sub>
+      concentrations and an increase in impairment in cognitive abilities. Relative
+      to 600 ppm, at 1.000 ppm CO<sub>2</sub>, moderate and statistically significant
       decrements occurred in six of nine scales of decision-making performance
       <a href="https://web.archive.org/web/20160305212909/http://ehp.niehs.nih.gov/wp-content/uploads/2012/09/ehp.1104789.pdf" target="_blank" rel="noopener noreferrer"><sup>[ref]</sup></a>.
       In a study of Volatile Organic Compound Exposure (VOC), of which CO<sub>2</sub>
