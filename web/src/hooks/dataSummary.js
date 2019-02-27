@@ -22,6 +22,7 @@ const useSummaryData = ({ data, interval }) => {
         return a;
       }, {})
       const avgValues = Object.keys(dayData).map(key => {
+        dayData[key].sort((a,b) => (a.ppm-b.ppm));
         return {
           key,
           date: +key,
