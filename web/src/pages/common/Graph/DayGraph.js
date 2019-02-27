@@ -13,8 +13,7 @@ import { useTimeScale } from '../../../hooks/graphScales'
 
 const DayGraph = (props) => {
   const {
-    x,
-    y,
+    transform,
     width,
     height,
     date,
@@ -34,7 +33,7 @@ const DayGraph = (props) => {
   const clipPath = `url(#${clipId})`;
 
   return (
-    <Group transform={{translate: [x, y]}}>
+    <Group transform={transform}>
       <Text y={-2} x={5}>{format(date, 'ddd\tDD\tMMM')}</Text>
       <XAxis
         scale={xScale}

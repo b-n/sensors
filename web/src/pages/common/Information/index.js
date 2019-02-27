@@ -9,7 +9,7 @@ const LegendTable = ({children}) => (<table className="info-legend"><tbody>{chil
 const LegendTableItem = ({color, range, explanation}) => (
   <tr>
     <td className="info-legend-range">
-      <span className="dot" style={{'background-color': color}}></span>
+      <span className="dot" style={{backgroundColor: color}}></span>
       {range}
     </td>
     <td className="info-legend-description">{explanation}</td>
