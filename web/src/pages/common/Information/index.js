@@ -23,7 +23,7 @@ const Information = () => {
   <section className="info-container">
     <h1>Information</h1>
     <p>
-      The graph to the right measures the average Carbon Dioxide (CO<sub>2</sub>)
+      The graph to the left measures the average Carbon Dioxide (CO<sub>2</sub>)
       concentration near the sensor in the office. And reads the values in Parts
       Per Million (ppm)
     </p>
