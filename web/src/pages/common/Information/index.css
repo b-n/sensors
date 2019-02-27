@@ -1,0 +1,29 @@
+.info-container {
+  position: fixed;
+  width: 35% ;
+  border-left: 1px darkgrey solid;
+  padding: 15px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  background-color: #f9fafb;
+  overflow-y: auto;
+}
+
+.info-legend td {
+  vertical-align: top;
+}
+
+.info-legend .dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  border: 1px grey solid;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.info-legend .info-legend-range {
+  padding-right: 10px;
+  white-space: nowrap;
+}

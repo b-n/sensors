@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import useSensorData from '../../hooks/sensorData'
-import Graph from '../common/Graph'
 import { useWindowWidth } from '../../hooks/window'
+
+import Graph from '../common/Graph'
+import Information from '../common/Information'
+
+import './Home.css'
 
 const Home = (props) => {
   const data = useSensorData('breather');  
@@ -9,14 +13,15 @@ const Home = (props) => {
   const width = useWindowWidth();
 
   return (
-    <div>
+    <Fragment>
       <section>
         {data !== null
-          ? <Graph data={data} width={width} />
+          ? <Graph data={data} width={width*0.65} />
           : null
         }
       </section>
-    </div>
+      <Information />
+    </Fragment>
   )
 }
 
