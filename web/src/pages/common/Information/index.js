@@ -57,6 +57,15 @@ const Information = () => {
       <LegendTableItem color={ppmColorScale(1100)} range="1000-1200" explanation="Open some windows already" />
       <LegendTableItem color={ppmColorScale(1300)} range="1200+" explanation="Illegal in South Netherlands (Belgium)" />
     </LegendTable>
+
+    <h2>Graph Info</h2>
+    <p>
+      Readings are taken every 1 minute from the device. If the value doesn't
+      change, then no value is plotted. Values are summarised into 10 minute
+      intervals, where the points represent the median value in that 10 minutes.
+      The black lines indicate the upper and lower quartile of the values in
+      the 10 minutes to show the variablility in the readings.
+    </p>
   </section>
   );
 }
