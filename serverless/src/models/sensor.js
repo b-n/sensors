@@ -11,10 +11,19 @@ const getSensorData = key => {
     });
 }
 
-const querySensorData = thing => {
+const querySensorData = ({thing, fromDate, toDate}) => {
+  let queryString = 'thing = :thing'
+  if (fromDate !== undefined && toDate !== undefined) queryString += ' AND summaryDate BETWEEN :from AND :to';
+  else if (fromDate !== undefined) queryString += ' AND summaryDate >= :from';
+  else if (toDate !== undefined) queryString += ' AND summaryDate <= :to';
+
   return query({
-    KeyConditionExpression: 'thing = :thing',
-    ExpressionAttributeValues: { ':thing': thing }
+    KeyConditionExpression: queryString,
+    ExpressionAttributeValues: {
+      ':thing': thing,
+      ':from': fromDate,
+      ':to': toDate
+    }
   }, dynamoTable).then(result => {
     if (!result.Count) return [];
     return result.Items;

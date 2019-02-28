@@ -4,8 +4,9 @@ import { querySensorData } from '../models/sensor'
 
 const handler = async (event, context) => {
   const { thing } = event.pathParameters;
+  const { fromDate, toDate } = event.queryStringParameters;
 
-  const data = await querySensorData(thing);
+  const data = await querySensorData({thing, fromDate, toDate});
 
   const res = {
     thing,
