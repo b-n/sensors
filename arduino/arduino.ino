@@ -9,18 +9,23 @@
 
 #define PWM_PIN D3
 #define PPM_RESOLUTION 5000
+#define ROLLING_READING_SIZE 5
 
 WifiManager wifiManager(STA_SSID, STA_PSK);
 IoT awsThing(THING_NAME, aws_endpoint, aws_key, aws_secret, aws_region);
 
 volatile unsigned long upPulse = 0;
 volatile unsigned long lastPulse = 0;
+volatile unsigned long newReadingAvailable = false;
+
+int readings[50] ;
+int lastReading = 0;
 
 long lastMillis;
 
-int currentPPM = 0;
+long readingNumber = 0;
 
-void updateAWS(int ppm) {
+void updateAWS(int ppm, long readingNumber) {
   const size_t capacity = 3*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2);
   DynamicJsonBuffer jsonBuffer(capacity);
   
@@ -28,18 +33,12 @@ void updateAWS(int ppm) {
   JsonObject& state = root.createNestedObject("state");
   JsonObject& reported = state.createNestedObject("reported");
   reported["ppm"] = ppm;
+  reported["readingNumber"] = readingNumber;
 
   char buffer[512];
   root.printTo(buffer, root.measureLength()+1);
 
   awsThing.sendState(buffer);
-}
-
-void updatePPM(int PPM) {
-  if (PPM != currentPPM) {
-    currentPPM = PPM;
-    updateAWS(currentPPM);
-  }
 }
 
 void ISR() {
@@ -49,12 +48,18 @@ void ISR() {
     return;
   }
   lastPulse = micros() - upPulse;
+  newReadingAvailable = true;
 }
 
-int getPPM() {
+void updateReadings() {
   double th = lastPulse;
   double tl = 1004000.0 - th;
-  return (int)(PPM_RESOLUTION * (th-2000)/(th+tl-4000));
+  int reading = (int)(PPM_RESOLUTION * (th-2000)/(th+tl-4000));
+  
+  for (int i = ROLLING_READING_SIZE-1; i > 0; i--) readings[i] = readings[i-1];
+  readings[0] = reading;
+
+  newReadingAvailable = false;
 }
 
 void setup() {
@@ -65,6 +70,10 @@ void setup() {
   wifiManager.setup();
 
   awsThing.setup();
+
+  for (int i = 0; i < ROLLING_READING_SIZE; i++) {
+    readings[i] = 0;
+  }
   
   lastMillis = millis();
 }
@@ -74,12 +83,16 @@ void loop() {
   if (wifiManager.status() == WL_CONNECTED) {
     awsThing.loop();
   }
+
+  if (newReadingAvailable) updateReadings();
   
   long currentMillis = millis();
-  if (currentMillis - lastMillis < 60000) return;
-  
-  lastMillis = currentMillis;
-
-  updatePPM(getPPM());
+  if (currentMillis - lastMillis > 60000) {
+    lastMillis = currentMillis;
+    int total = 0;
+    for (int i = 0; i< ROLLING_READING_SIZE; i++) total += readings[i];
+    updateAWS(total / ROLLING_READING_SIZE, readingNumber);
+    readingNumber++;
+  }
 
 }

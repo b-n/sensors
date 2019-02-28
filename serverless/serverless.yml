@@ -113,7 +113,7 @@ resources:
           Sql: >-
             select timestamp, topic(3) as thing, previous.state.reported.ppm as oldPPM, current.state.reported.ppm as newPPM
             from '$aws/things/+/shadow/update/documents'
-            where previous.state.reported.ppm <> current.state.reported.ppm
+            where previous.state.reported.readingNumber <> current.state.reported.readingNumber
           Actions:
             -
               Republish:
