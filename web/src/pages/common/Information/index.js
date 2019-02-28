@@ -60,13 +60,13 @@ const Information = () => {
       <LegendTableItem color={ppmColorScale(1300)} range="1200+" explanation="Illegal in South Netherlands (Belgium)" />
     </LegendTable>
 
-    <h2>Graph Info</h2>
+    <h2>Data Info</h2>
     <p>
-      Readings are taken every 1 minute from the device. If the value doesn't
-      change, then no value is plotted. Values are summarised into 10 minute
-      intervals, where the points represent the median value in that 10 minutes.
-      The black lines indicate the upper and lower quartile of the values in
-      the 10 minutes to show the variablility in the readings.
+      Readings are taken every 1 minute from the device, and are comprised of
+      average ppm over that 1 minute period. Values are summarised into 10 minute
+      intervals, where the points represent the median value in that 10 minute1s.
+      The black lines indicate the interquartile range (IQR) of the values in
+      the 10 minute period to show the variablility in the readings.
     </p>
   </section>
   );
