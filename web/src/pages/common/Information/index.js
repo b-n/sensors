@@ -16,12 +16,14 @@ const LegendTableItem = ({color, range, explanation}) => (
   </tr>
 );
 
-const Information = () => {
+const Information = ({onlySummary}) => {
   const ppmColorScale = useSequentialScale({ interpolator: interpolateRdYlGn, to: 400, from: 1200 });
 
   return (
   <section className="info-container">
     <h1>Information</h1>
+    {!onlySummary && (
+      <>
     <p>
       The graph to the left measures the average Carbon Dioxide (CO<sub>2</sub>)
       concentration near the sensor in the office. The sensor reads the values
@@ -40,6 +42,8 @@ const Information = () => {
       animals. Raising the concentration to 10.000ppm for several hours will
       kill spider mites and whiteflies in a greenhouse.
     </p>
+      </>
+    )}
     <p>
       A few studies have found linkages in increased CO<sub>2</sub>
       concentrations and an increase in impairment in cognitive abilities. Relative

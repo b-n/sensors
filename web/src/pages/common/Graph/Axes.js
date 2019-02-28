@@ -45,7 +45,7 @@ const YAxis = (props) => {
 
   return (
     <Group transform={transform} className={className}>
-      {gridline && scale.ticks(ticks).filter((_x, i) => i !== 0).map((tick, i) => (
+      {gridline && scale.ticks(ticks).map((tick, i) => (
         <Line key={tick} x1={0} x2={gridline} y1={scale(tick)} y2={scale(tick)} className="gridline"/>
       ))}
       <g ref={axisEl}></g>

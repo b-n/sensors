@@ -1,14 +1,18 @@
 import React, { Fragment } from 'react';
+
 import useSensorData from '../../hooks/sensorData'
 import { useWindowWidth } from '../../hooks/window'
+import { useCastSender } from '../../hooks/cast'
 
 import Graph from '../common/Graph'
 import Information from '../common/Information'
 
-import './Home.css'
+import { env } from '../../config'
 
-const Home = (props) => {
-  const data = useSensorData('breather');  
+const Home = () => {
+  useCastSender({appId: env.chromeCastAppId});
+  
+  const data = useSensorData('breather');
 
   const width = useWindowWidth();
 
@@ -16,11 +20,11 @@ const Home = (props) => {
     <Fragment>
       <section>
         {data !== null
-          ? <Graph data={data} width={width*0.65} />
+          ? <Graph data={data} width={width*0.65} animate={true}/>
           : null
         }
       </section>
-      <Information />
+      <Information onlySummary={false}/>
     </Fragment>
   )
 }

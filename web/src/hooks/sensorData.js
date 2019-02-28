@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { env } from '../config'
 
-const useSensorData = (thing) => {
+const useSensorData = (thing, { fromDate, toDate } = {}) => {
   const [sensorData, setSensorData] = useState(null);
 
   useEffect(() => {
+    const url = new URL(thing, env.apiEndpoint);
+    if (fromDate) url.searchParams.append('fromDate', fromDate);
+    if (toDate) url.searchParams.append('toDate', toDate);
+
     fetch(
-      env.apiEndpoint + thing,
+      url,
       {
         method: 'GET',
         headers: {
@@ -17,7 +21,7 @@ const useSensorData = (thing) => {
     )
       .then(res => res.json())
       .then(res => { setSensorData(res) });
-  }, []);
+  }, [ fromDate, toDate ]);
 
   return sensorData
 }

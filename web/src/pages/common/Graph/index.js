@@ -9,7 +9,7 @@ import { useSummaryData } from '../../../hooks/dataSummary'
 import { interpolateRdYlGn } from 'd3-scale-chromatic'
 
 const Graph = (props) => {
-  const { data, width } = props;
+  const { data, width, animate } = props;
 
   const summaryData = useSummaryData({ data: data.data, interval: 10 });
 
@@ -36,6 +36,7 @@ const Graph = (props) => {
           data={d.data}
           yScale={yScale}
           ppmColorScale={ppmColorScale}
+          animate={animate}
         />
       ) : null}
     </Svg>

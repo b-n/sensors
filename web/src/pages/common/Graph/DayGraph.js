@@ -19,7 +19,8 @@ const DayGraph = (props) => {
     date,
     data,
     yScale,
-    ppmColorScale
+    ppmColorScale,
+    animate
   } = props;
 
   const from = addHours(date, 6),
@@ -56,10 +57,10 @@ const DayGraph = (props) => {
         <Collection
           data={data}
           nodeEnter={d => ({ ...d, median: yMin, upper: yMin, lower: yMin })}
-          animate
+          animate={animate}
         >
           {nodes => nodes.map(({key, date, median, lower, upper}) => {
-            const x = xScale(new Date(date));
+            const x = xScale(date);
             return (
               <Fragment key={key}>
                 <Line x1={x} x2={x} y1={yScale(lower)} y2={yScale(upper)} clipPath={clipPath}/>
