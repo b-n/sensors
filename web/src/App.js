@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const App = (props) => {
   return(
-    <Router>
+    <Router basename={process.env.NODE_ENV === 'development' ? '' : '/sensors'}>
       <div>
         <Route exact path="/" component={Home} />
         <Route path="/reciever" component={CastReciever} />
