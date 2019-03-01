@@ -12,7 +12,9 @@ const useCastSender = ({appId}) => {
 const useCastReciever = () => {
   useEffect(() => {
     const context = window.cast.framework.CastReceiverContext.getInstance();
-    context.start();
+    const options = new window.cast.framework.CastReceiverOptions();
+    options.disableIdleTimeout = true;
+    context.start(options);
     if (process.env.NODE_ENV === 'development') context.setLoggerLevel(window.cast.framework.LoggerLevel.DEBUG);
   }, []);
 }
