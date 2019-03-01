@@ -9,8 +9,8 @@ import Information from '../common/Information'
 
 const CastReciever = () => {
   useCastReciever();
-  const fromDate = format(addDays(new Date(), -2), 'YYYY-MM-DD')
-  const data = useSensorData('breather', { fromDate });  
+  const fromDate = format(addDays(new Date(), -3), 'YYYY-MM-DD')
+  const data = useSensorData('breather', { fromDate, refreshDuration: 60000 });  
 
   const width = useWindowWidth();
 
