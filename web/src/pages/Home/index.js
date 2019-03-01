@@ -12,7 +12,7 @@ import { env } from '../../config'
 const Home = () => {
   useCastSender({appId: env.chromeCastAppId});
   
-  const data = useSensorData('breather');
+  const data = useSensorData('breather', { refreshDuration: 300000 });
 
   const width = useWindowWidth();
 
