@@ -34,7 +34,7 @@ const putSensorData = item => {
   return put(item, dynamoTable);
 }
 
-const getDataPointFromIOTReading = ({ thing, newPPM, timestamp }) => ({ thing, ppm: newPPM, timestamp: new Date(0).setUTCSeconds(timestamp) });
+const getDataPointFromIOTReading = (event) => ({ ...event, timestamp: new Date(0).setUTCSeconds(event.timestamp) });
 
 export {
   getSensorData,

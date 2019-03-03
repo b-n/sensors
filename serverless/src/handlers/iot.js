@@ -7,7 +7,7 @@ import { getSetupData } from '../models/setup'
 const handler = async (event, context) => {
   
   const newDataPoint = getDataPointFromIOTReading(event);
-  const { thing, ppm, timestamp } = newDataPoint;
+  const { thing, ppm, temp, timestamp } = newDataPoint;
 
   const { timeZone } = await getSetupData(thing);
 
@@ -19,8 +19,9 @@ const handler = async (event, context) => {
 
   const newData = {
     ...data,
-    history: data.history.concat({ppm, timestamp}),
-    last: ppm,
+    history: data.history.concat({ppm, temp, timestamp}),
+    lastPPM: ppm,
+    lastTemp: temp,
     lastTimestamp: timestamp
   };
 
