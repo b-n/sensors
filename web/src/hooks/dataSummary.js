@@ -34,7 +34,7 @@ const useSummaryData = ({ data, interval }) => {
           min: quantile(dayData[key], 0, d => d.ppm)
         }
       })
-      allMinMax.push(...extent(avgValues, d => d.mean));
+      allMinMax.push(...extent(avgValues, d => d.median));
       return { 
         date: d,
         data: avgValues
