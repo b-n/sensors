@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { differenceInSeconds } from 'date-fns';
 import { extent, mean, quantile } from 'd3-array';
 
-const useSummaryData = ({ data, interval }) => {
+const useSummaryData = ({ data, interval, extentAccessor = (d => d.median) }) => {
 
   const [ summaryData, setSummaryData ] = useState({ min: 0, max: 0, data: []});
 
@@ -34,7 +34,7 @@ const useSummaryData = ({ data, interval }) => {
           min: quantile(dayData[key], 0, d => d.ppm)
         }
       })
-      allMinMax.push(...extent(avgValues, d => d.median));
+      allMinMax.push(...extent(avgValues, extentAccessor));
       return { 
         date: d,
         data: avgValues
