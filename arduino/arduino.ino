@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include "IoT.h"
@@ -12,11 +13,16 @@
 #define MHZ19_TX D7
 #define ROLLING_READING_SIZE 12
 
+WiFiClientSecure wifiClient;
 WifiManager wifiManager(STA_SSID, STA_PSK);
-IoT awsThing(THING_NAME, aws_endpoint, aws_key, aws_secret, aws_region);
+IoT awsThing(THING_NAME, mqttServer, wifiClient);
 
 SoftwareSerial mhz_serial(MHZ19_RX, MHZ19_TX, false, 256); 
 MHZ19 mhz(&mhz_serial);
+
+X509List cert(clientCert);
+PrivateKey privateKey(clientPrivateKey);
+X509List caCerts;
 
 int co2Readings[ROLLING_READING_SIZE];
 int tempReadings[ROLLING_READING_SIZE];
@@ -52,8 +58,8 @@ void pushOntoArray(int *arr, int val) {
 void getSerialReading() {
   bool validResult = mhz.getReading();
   if (!validResult) return;
-  readingNumber++;
   
+  readingNumber++;
   pushOntoArray(co2Readings, mhz.getCO2());
   pushOntoArray(tempReadings, mhz.getTemp());
 }
@@ -61,6 +67,12 @@ void getSerialReading() {
 void setup() {
   Serial.begin(9600);
   mhz_serial.begin(9600);
+
+  caCerts.append(rootCA1);
+  caCerts.append(rootCA2);
+
+  wifiClient.setTrustAnchors(&caCerts);
+  wifiClient.setClientRSACert(&cert, &privateKey);
 
   wifi_set_sleep_type(NONE_SLEEP_T);
   wifiManager.setup();
@@ -78,6 +90,7 @@ void loop() {
   wifiManager.loop();
   if (wifiManager.status() == WL_CONNECTED) {
     awsThing.loop();
+    Serial.println(wifiClient.getLastSSLError());
   }
   
   long currentMillis = millis();

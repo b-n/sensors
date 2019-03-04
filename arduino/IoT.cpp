@@ -1,15 +1,10 @@
 #include "IoT.h"
 
 void IoT::setup() {
-  awsWSclient->setAWSRegion(region);
-  awsWSclient->setAWSDomain(ep);
-  awsWSclient->setAWSKeyID(key);
-  awsWSclient->setAWSSecretKey(secret);
-  awsWSclient->setUseSSL(true);
 }
 
 void IoT::loop() {
-  if (!mqttclient->connected()) {
+  if (!mqttClient->connected()) {
     if (connectToMQTT()) {
       Serial.println("Connected to MQTT");
       subscribeToTopics();
@@ -17,33 +12,35 @@ void IoT::loop() {
     }
   }
 
-  if (mqttclient->connected()) {
-    mqttclient->loop();
+  if (mqttClient->connected()) {
+    mqttClient->loop();
   }
 }
 
 bool IoT::connectToMQTT() {  
-  if (mqttclient->connected()) mqttclient->disconnect();
+  if (mqttClient->connected()) mqttClient->disconnect();
 
-  mqttclient->setServer(ep, port);
+  mqttClient->setServer(_mqttAddress, _port);
+
   char *clientId = generateClientID();
-  bool connected = mqttclient->connect(clientId);
-  
+  Serial.println(ESP.getFreeHeap());
+  bool connected = mqttClient->connect(clientId);
+
   if (!connected) {
     Serial.print("failed to connect to MQTT, state=");
-    Serial.println(mqttclient->state());
+    Serial.println(mqttClient->state());
   }
 
   return connected;
 }
 
 void IoT::subscribeToTopics() {
-  mqttclient->setCallback(callback);
+  mqttClient->setCallback(callback);
 
   Serial.println("Subscribed to:");
   for (int i = 0; i < 5; i++) {
     Serial.println(topics[i]);
-    mqttclient->subscribe(topics[i]);
+    mqttClient->subscribe(topics[i]);
   }
   Serial.println("MQTT subscribed");
 }
@@ -57,17 +54,17 @@ void IoT::setConnectedCallback(std::function<void()> callback) {
 }
 
 void IoT::sendState(char *state) {
-  mqttclient->publish(publishTopic, state);
+  mqttClient->publish(publishTopic, state);
 }
 
 void IoT::getState() {
-  mqttclient->publish(getTopic, "");
+  mqttClient->publish(getTopic, "");
 }
 
 
 char* IoT::generateClientID() {
   char* cID = new char[23]();
   for (int i=0; i<22; i+=1)
-    cID[i]=(char)random(1, 256);
+    cID[i]=(char)random(32, 126);
   return cID;  
 }

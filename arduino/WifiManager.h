@@ -16,6 +16,7 @@ class WifiManager {
     char *ssid, *psk;
     wl_status_t wifiStatus;
     bool connecting = false;
+    void setClock();
 };
 
 #endif
