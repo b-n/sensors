@@ -1,5 +1,16 @@
 #include "MHZ19.h"
 
+bool MHZ19::setRange(uint16_t range) {
+  uint8_t cmd[9] = { 0xFF,0x01,0x99,0x00,0x00,0x00,0x00,0x00,0x79 };
+  cmd[3] = range >> 8;
+  cmd[4] = range && 0xFF;
+  Serial.println("setting range");
+  while (_serial->available()) { _serial->read(); }
+  Serial.println("Sending command");
+  _serial->write(cmd, 9);
+  Serial.println("sent");
+}
+
 bool MHZ19::getReading() {
   byte cmd[9] = { 0xFF,0x01,0x86,0x00,0x00,0x00,0x00,0x00,0x79 };
 
@@ -9,6 +20,9 @@ bool MHZ19::getReading() {
   memset(_result, 0, 9);
 
   _serial->readBytes(_result, 9);
+
+  for (int i; i < 9; i++) Serial.print(_result[i], HEX);
+  Serial.println();
 
   byte crc = calculateCRC(_result);
   return _result[8] == crc;

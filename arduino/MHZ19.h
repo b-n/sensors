@@ -9,6 +9,7 @@ class MHZ19 {
   public:
     MHZ19(SoftwareSerial *serial) : _serial(serial) {}
 
+    bool setRange(uint16_t range);
     bool getReading();
     int getCO2();
     int getTemp();

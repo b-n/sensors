@@ -1,19 +1,25 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include "IoT.h"
-#include "WifiManager.h"
+#include "AWSWebSocketClient.h"
+#include <PubSubClient.h>
+#include <AWSIoTduino.h>
 #include "MHZ19.h"
 
 #include "WifiSettings.h"  //update to your wifi settings
 #include "IoTSettings.h"   //update to your AWS IoT settings
 
+#define MHZ19_PPM 2000
 #define MHZ19_RX D6
 #define MHZ19_TX D7
 #define ROLLING_READING_SIZE 12
 
-WifiManager wifiManager(STA_SSID, STA_PSK);
-IoT awsThing(THING_NAME, aws_endpoint, aws_key, aws_secret, aws_region);
+//MQTT setup
+const int maxMQTTMessageHandlers = 1;
+
+AWSWebSocketClient awsWS(1000);
+PubSubClient mqttClient(awsWS);
+Thing awsThing(THING_NAME, mqttClient);
 
 SoftwareSerial mhz_serial(MHZ19_RX, MHZ19_TX, false, 256); 
 MHZ19 mhz(&mhz_serial);
@@ -51,9 +57,10 @@ void pushOntoArray(int *arr, int val) {
 
 void getSerialReading() {
   bool validResult = mhz.getReading();
+  Serial.println(validResult);
   if (!validResult) return;
   readingNumber++;
-  
+  Serial.println(mhz.getCO2());
   pushOntoArray(co2Readings, mhz.getCO2());
   pushOntoArray(tempReadings, mhz.getTemp());
 }
@@ -61,11 +68,18 @@ void getSerialReading() {
 void setup() {
   Serial.begin(9600);
   mhz_serial.begin(9600);
+  delay(1000);
+  mhz.setRange(MHZ19_PPM);
 
   wifi_set_sleep_type(NONE_SLEEP_T);
-  wifiManager.setup();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STA_SSID, STA_PSK);
 
-  awsThing.setup();
+  awsWS.setAWSRegion(aws_region);
+  awsWS.setAWSDomain(aws_endpoint);
+  awsWS.setAWSKeyID(aws_key);
+  awsWS.setAWSSecretKey(aws_secret);
+  awsWS.setUseSSL(true);
 
   memset(co2Readings, 0, ROLLING_READING_SIZE);
   memset(tempReadings, 0, ROLLING_READING_SIZE);
@@ -75,8 +89,7 @@ void setup() {
 }
 
 void loop() {
-  wifiManager.loop();
-  if (wifiManager.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED) {
     awsThing.loop();
   }
   
@@ -94,7 +107,6 @@ void loop() {
 
     int co2Average = average(co2Readings, readings);
     int tempAverage = average(tempReadings, readings);
-
     updateAWS(co2Average, tempAverage, resultNumber);
     readingNumber = 0;
     resultNumber++;
