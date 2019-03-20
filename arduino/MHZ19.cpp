@@ -21,9 +21,6 @@ bool MHZ19::getReading() {
 
   _serial->readBytes(_result, 9);
 
-  for (int i; i < 9; i++) Serial.print(_result[i], HEX);
-  Serial.println();
-
   byte crc = calculateCRC(_result);
   return _result[8] == crc;
 }

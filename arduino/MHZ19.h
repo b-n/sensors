@@ -7,7 +7,7 @@ byte calculateCRC(byte *data);
 
 class MHZ19 {
   public:
-    MHZ19(SoftwareSerial *serial) : _serial(serial) {}
+    MHZ19(SoftwareSerial& serial) : _serial(&serial) {}
 
     bool setRange(uint16_t range);
     bool getReading();
@@ -17,8 +17,8 @@ class MHZ19 {
   private:
     SoftwareSerial *_serial;
     byte _result[9];
+    
     int bytes2int(byte h, byte l);
-
     void sendCommand(byte *cmd);
 };
 
