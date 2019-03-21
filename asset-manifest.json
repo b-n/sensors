@@ -1,13 +1,13 @@
 {
-  "main.css": "/sensors/static/css/main.19e7130e.chunk.css",
-  "main.js": "/sensors/static/js/main.65ae4e6f.chunk.js",
-  "main.js.map": "/sensors/static/js/main.65ae4e6f.chunk.js.map",
-  "static/js/1.2051d927.chunk.js": "/sensors/static/js/1.2051d927.chunk.js",
-  "static/js/1.2051d927.chunk.js.map": "/sensors/static/js/1.2051d927.chunk.js.map",
+  "main.css": "/sensors/static/css/main.df8ddefd.chunk.css",
+  "main.js": "/sensors/static/js/main.a83b8a7b.chunk.js",
+  "main.js.map": "/sensors/static/js/main.a83b8a7b.chunk.js.map",
+  "static/js/1.28d49398.chunk.js": "/sensors/static/js/1.28d49398.chunk.js",
+  "static/js/1.28d49398.chunk.js.map": "/sensors/static/js/1.28d49398.chunk.js.map",
   "runtime~main.js": "/sensors/static/js/runtime~main.67d73efb.js",
   "runtime~main.js.map": "/sensors/static/js/runtime~main.67d73efb.js.map",
-  "static/css/main.19e7130e.chunk.css.map": "/sensors/static/css/main.19e7130e.chunk.css.map",
+  "static/css/main.df8ddefd.chunk.css.map": "/sensors/static/css/main.df8ddefd.chunk.css.map",
   "index.html": "/sensors/index.html",
-  "precache-manifest.7b6072ec4db6c60e5cc4fc3d6171ae26.js": "/sensors/precache-manifest.7b6072ec4db6c60e5cc4fc3d6171ae26.js",
+  "precache-manifest.de7e7993216186a68d645826981fa11f.js": "/sensors/precache-manifest.de7e7993216186a68d645826981fa11f.js",
   "service-worker.js": "/sensors/service-worker.js"
 }
