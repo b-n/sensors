@@ -17,7 +17,7 @@ const LegendTableItem = ({color, range, explanation}) => (
 );
 
 const Information = ({onlySummary}) => {
-  const ppmColorScale = useSequentialScale({ interpolator: interpolateRdYlGn, to: 400, from: 1200 });
+  const ppmColorScale = useSequentialScale({ domain: [1200, 400], interpolator: interpolateRdYlGn });
 
   return (
   <section className="info-container">

@@ -30,7 +30,7 @@ const CastReciever = () => {
           : null
         }
       </section>
-      <Information onlySummary={false}/>
+      <Information onlySummary={true}/>
     </Fragment>
   )
 }
