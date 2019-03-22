@@ -72,6 +72,9 @@ const Information = ({onlySummary}) => {
       The black lines indicate the interquartile range (IQR) of the values in
       the 10 minute period to show the variablility in the readings.
     </p>
+    <p>
+      A hack project by <a href="https://bennaylor.dev/" target="blank">Ben Naylor</a>. <a href="https://www.github.com/nzchicken/sensors" target="blank">Source Code</a>
+    </p>
   </section>
   );
 }
