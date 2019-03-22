@@ -46,7 +46,7 @@ functions:
     events:
       - iot:
           sql: >-
-            select timestamp, thing, ppm, temp
+            select timestamp, thing, ppm, temp, humidity
             from 'sensor-reading-${self:provider.stage}'
   iot-test:
     handler: src/handlers/iot.test
@@ -111,7 +111,7 @@ resources:
           Description: Take readings things that are sensors, and republish them to a better topic
           RuleDisabled: "false"
           Sql: >-
-            select timestamp, topic(3) as thing, current.state.reported.ppm as ppm, current.state.reported.temp as temp
+            select timestamp, topic(3) as thing, current.state.reported.ppm as ppm, current.state.reported.temp as temp, current.state.reported.humidity as humidity
             from '$aws/things/+/shadow/update/documents'
             where previous.state.reported.readingNumber <> current.state.reported.readingNumber
           Actions:

@@ -11,7 +11,7 @@ const handler = async (event, context) => {
   const res = {
     thing,
     data: data.reduce((a, c) => {
-      a[c.summaryDate] = c.history.map(({ppm, timestamp}) => ({ppm, timestamp}));
+      a[c.summaryDate] = c.history;
       return a;
     }, {})
   };
