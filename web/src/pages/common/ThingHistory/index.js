@@ -17,10 +17,11 @@ const Graph = ({
 }) => {
   const summaryData = useSummaryData({ data: data.data, interval: 10 });
 
-  const { co2, temp } = summaryData;
+  const { co2, temp, humidity } = summaryData;
 
   const co2Scale = useLinearScale({ domain: padArray(co2, 0.05) });
   const tempScale = useLinearScale({ domain: padArray(temp, 0.05) });
+  const humidityScale = useLinearScale({ domain: padArray(humidity, 0.05) });
 
   const co2ColorScale = useSequentialScale({ domain: [ 1200, 400 ], interpolator: interpolateRdYlGn })
 
@@ -33,6 +34,7 @@ const Graph = ({
           co2Scale={co2Scale}
           co2ColorScale={co2ColorScale}
           tempScale={tempScale}
+          humidityScale={humidityScale}
           date={d.date}
           data={d.data}
           animate={animate}

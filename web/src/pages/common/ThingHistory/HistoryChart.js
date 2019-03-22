@@ -7,12 +7,14 @@ import { useTimeScale } from '../../../hooks'
 
 import CO2Plot from './CO2Plot'
 import TempPlot from './TempPlot'
+import HumidityPlot from './HumidityPlot'
 
 const HistoryChart = ({
   width,
   co2Scale,
   co2ColorScale,
   tempScale,
+  humidityScale,
   date,
   data,
   animate
@@ -29,12 +31,13 @@ const HistoryChart = ({
       height={200}
       marginLeft={50}
       marginTop={40}
-      marginRight={40}
+      marginRight={80}
     >
       <Text className="title" x={10} y={-5}>{format(date, 'ddd DD MMM')}</Text>
       <AxisLeft 
         scale={co2Scale}
         gridlines
+        ticks={9}
       />
       <AxisBottom
         scale={xScale}
@@ -42,12 +45,27 @@ const HistoryChart = ({
       />
       <AxisRight
         scale={tempScale}
+        className="scale-temp"
+        ticks={9}
+      />
+      <AxisRight
+        scale={humidityScale}
+        translate={[40, 0]}
+        className="scale-humidity"
+        ticks={9}
       />
       <TempPlot
         xScale={xScale}
         yScale={tempScale}
         date={date}
         data={data}
+        animate={animate}
+      />
+      <HumidityPlot
+        xScale={xScale}
+        yScale={humidityScale}
+        data={data}
+        date={date}
         animate={animate}
       />
       <CO2Plot

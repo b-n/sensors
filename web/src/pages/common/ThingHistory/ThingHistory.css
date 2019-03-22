@@ -16,3 +16,11 @@
   fill: black;
   r: 1px;
 }
+
+.scale-temp text {
+  color: red;
+}
+
+.scale-humidity text {
+  color: blue;
+}

@@ -38,9 +38,10 @@ const AxisBottom = ({
   gridlines,
   className,
   ticks,
-  tickFormat
+  tickFormat,
+  translate = [0, 0]
 }) => {
-  const translate = useTranslate([0, chart.plotHeight]);
+  const pos = useTranslate([translate[0], translate[1] + chart.plotHeight]);
 
   scale.range([0, chart.plotWidth]);
 
@@ -52,7 +53,7 @@ const AxisBottom = ({
   })
 
   return (
-    <Group transform={{translate}} className={className}>
+    <Group transform={{translate: pos}} className={className}>
       {gridlines && scale.ticks().map(tick => scale(tick) > 0 && (
         <Line key={tick} x1={scale(tick)+0.5} x2={scale(tick)+0.5} y1={-chart.plotHeight} y2={0} className="gridline" />
       ))}
@@ -67,9 +68,10 @@ const AxisLeft = ({
   gridlines,
   className,
   ticks,
-  tickFormat
+  tickFormat,
+  translate = [0, 0]
 }) => {
-  const translate = useTranslate([0,0]);
+  const pos = useTranslate([translate[0], translate[1]]);
 
   scale.range([chart.plotHeight, 0]);
 
@@ -81,7 +83,7 @@ const AxisLeft = ({
   })
 
   return (
-    <Group transform={{translate}} className={className}>
+    <Group transform={{translate: pos}} className={className}>
       {gridlines && scale.ticks().map(tick => (
         <Line key={tick} x1={0} x2={chart.plotWidth} y1={scale(tick)+0.5} y2={scale(tick)+0.5} className="gridline"/>
       ))}
@@ -96,9 +98,10 @@ const AxisRight = ({
   gridlines,
   className,
   ticks,
-  tickFormat
+  tickFormat,
+  translate = [0,0]
 }) => {
-  const translate = useTranslate([chart.plotWidth,0]);
+  const pos = useTranslate([translate[0] + chart.plotWidth, translate[1]]);
 
   scale.range([chart.plotHeight, 0]);
 
@@ -110,7 +113,7 @@ const AxisRight = ({
   })
 
   return (
-    <Group transform={{translate}} className={className}>
+    <Group transform={{translate: pos}} className={className}>
       {gridlines && scale.ticks().map(tick => (
         <Line key={tick} x1={0} x2={chart.plotWidth} y1={scale(tick)+0.5} y2={scale(tick)+0.5} className="gridline"/>
       ))}

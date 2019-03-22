@@ -1,7 +1,7 @@
 import React from 'react'
 import { Line } from '../../../components/Chart'
 
-const TempPlot = ({
+const HumidityPlot = ({
   chart,
   yScale,
   xScale,
@@ -9,7 +9,7 @@ const TempPlot = ({
   date,
   data,
   animate,
-  measure = 'temp'
+  measure = 'humidity'
 }) => {
 
   const graphData = data.map(({key, date, ...measures}) => ({
@@ -19,16 +19,18 @@ const TempPlot = ({
   }))
     .filter(d => !isNaN(d.median) && d.median)
 
+  console.log(graphData);
+
   return (
     <Line
       x={d => xScale(d.date)}
       y={d => yScale(d.median)}
       chart={chart}
-      data={[{ key: date, color: '#ff9999', data: graphData }]}
+      data={[{ key: date, color: '#9999ff', data: graphData }]}
       animate={animate}
       accessor={d => d.data}
     />
   )
 }
 
-export default TempPlot
+export default HumidityPlot
