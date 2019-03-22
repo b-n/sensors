@@ -14,7 +14,7 @@ const CastReciever = () => {
 
   const width = useWindowWidth();
 
-  const graphWidth = width*0.65*(1/data.length);
+  const graphWidth = width*0.65;
 
   return (
     <Fragment>
