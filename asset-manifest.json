@@ -1,13 +1,13 @@
 {
   "main.css": "/sensors/static/css/main.c26f5b09.chunk.css",
-  "main.js": "/sensors/static/js/main.06eed0fe.chunk.js",
-  "main.js.map": "/sensors/static/js/main.06eed0fe.chunk.js.map",
+  "main.js": "/sensors/static/js/main.24d54659.chunk.js",
+  "main.js.map": "/sensors/static/js/main.24d54659.chunk.js.map",
   "static/js/1.77cde0f4.chunk.js": "/sensors/static/js/1.77cde0f4.chunk.js",
   "static/js/1.77cde0f4.chunk.js.map": "/sensors/static/js/1.77cde0f4.chunk.js.map",
   "runtime~main.js": "/sensors/static/js/runtime~main.67d73efb.js",
   "runtime~main.js.map": "/sensors/static/js/runtime~main.67d73efb.js.map",
   "static/css/main.c26f5b09.chunk.css.map": "/sensors/static/css/main.c26f5b09.chunk.css.map",
   "index.html": "/sensors/index.html",
-  "precache-manifest.b84dd4fd364fc48ef8cf02fcf653cac9.js": "/sensors/precache-manifest.b84dd4fd364fc48ef8cf02fcf653cac9.js",
+  "precache-manifest.3b89a39fe8f2a50ad813663dca22b2bc.js": "/sensors/precache-manifest.3b89a39fe8f2a50ad813663dca22b2bc.js",
   "service-worker.js": "/sensors/service-worker.js"
 }
