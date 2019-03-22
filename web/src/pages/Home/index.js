@@ -4,26 +4,42 @@ import useSensorData from '../../hooks/sensorData'
 import { useWindowWidth } from '../../hooks/window'
 import { useCastSender } from '../../hooks/cast'
 
-import Graph from '../common/Graph'
+import ThingHistory from '../common/ThingHistory'
 import Information from '../common/Information'
+import { addDays, format } from 'date-fns';
 
 import { env } from '../../config'
+import './Home.css'
 
 const Home = () => {
   useCastSender({appId: env.chromeCastAppId});
   
-  const data = useSensorData('breather', { refreshDuration: 300000 });
+  const data1 = useSensorData('breather', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -8), 'YYYY-MM-DD')});
+  //const data2 = useSensorData('breather2', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -5), 'YYYY-MM-DD')});
+  
+  const data = [ data1 ];
 
   const width = useWindowWidth();
 
+  const graphWidth = width*0.65*(1/data.length);
+
   return (
     <Fragment>
-      <section>
-        {data !== null
-          ? <Graph data={data} width={width*0.65} animate={true}/>
-          : null
-        }
-      </section>
+      {data.map(d => d !== null && (
+        <section
+          key={d.thing}
+          style={{width: graphWidth}}
+        >
+          {d !== null
+            ? <ThingHistory
+                data={d}
+                width={graphWidth}
+                animate={true}
+              />
+            : null
+          }
+        </section>
+      ))}
       <Information onlySummary={false}/>
     </Fragment>
   )

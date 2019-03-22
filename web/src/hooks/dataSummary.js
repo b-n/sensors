@@ -2,14 +2,31 @@ import { useState, useEffect } from 'react';
 import { differenceInSeconds } from 'date-fns';
 import { extent, mean, quantile } from 'd3-array';
 
+const getDataPoints = (data, accessor) => {
+  data.sort((a,b) => accessor(a) - accessor(b));
+  return {
+    mean: mean(data, accessor),
+    max: quantile(data, 1, accessor),
+    upper: quantile(data, 0.75, accessor),
+    median: quantile(data, 0.5, accessor),
+    lower: quantile(data, 0.25, accessor),
+    min: quantile(data, 0, accessor)
+  }
+}
+
 const useSummaryData = ({ data, interval, extentAccessor = (d => d.median) }) => {
 
-  const [ summaryData, setSummaryData ] = useState({ min: 0, max: 0, data: []});
+  const [ summaryData, setSummaryData ] = useState({ co2: [], temp: [], humidity: [], data: []});
 
   const intervalSeconds = interval * 60;
 
   useEffect(() => {
-    const allMinMax = [];
+    const extents = {
+      co2: [],
+      temp: [],
+      humidity: []
+    };
+
     const outputData = Object.keys(data).map(d => {
       const baseDate = new Date(d + 'T00:00:00');
 
@@ -21,31 +38,27 @@ const useSummaryData = ({ data, interval, extentAccessor = (d => d.median) }) =>
         a[timeGroup].push(c);
         return a;
       }, {})
-      const avgValues = Object.keys(dayData).map(key => {
-        dayData[key].sort((a,b) => (a.ppm-b.ppm));
-        return {
+
+      const avgValues = Object.keys(dayData).map(key => ({
           key,
           date: +key,
-          mean: mean(dayData[key], d => d.ppm),
-          max: quantile(dayData[key], 1, d => d.ppm),
-          upper: quantile(dayData[key], 0.75, d => d.ppm),
-          median: quantile(dayData[key], 0.5, d => d.ppm),
-          lower: quantile(dayData[key], 0.25, d => d.ppm),
-          min: quantile(dayData[key], 0, d => d.ppm)
-        }
-      })
-      allMinMax.push(...extent(avgValues, extentAccessor));
+          co2: getDataPoints(dayData[key], d => d.ppm),
+          temp: getDataPoints(dayData[key], d => d.temp),
+          humidity: getDataPoints(dayData[key], d => d.humidity)
+      }));
+
+      Object.keys(extents).map(measure => extents[measure].push(...extent(avgValues.map(val => val[measure]), extentAccessor)));
+
       return { 
-        date: d,
+        date: baseDate,
         data: avgValues
       };
-    }).sort((a, b) => a.date >= b.date ? a.date > b.date ? -1 : 0 : 1);
+    }).sort((a, b) => b.date - a.date);
 
-    const totalExtent = extent(allMinMax);
+    Object.keys(extents).map(key => extents[key] = extent(extents[key]));
 
     setSummaryData({
-      min: totalExtent[0],
-      max: totalExtent[1],
+      ...extents,
       data: outputData
     });
 

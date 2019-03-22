@@ -4,7 +4,7 @@ import { useWindowWidth } from '../../hooks/window'
 import { useCastReciever } from '../../hooks/cast'
 import { format, addDays } from 'date-fns'
 
-import Graph from '../common/Graph'
+import ThingHistory from '../common/ThingHistory'
 import Information from '../common/Information'
 
 const CastReciever = () => {
@@ -14,15 +14,23 @@ const CastReciever = () => {
 
   const width = useWindowWidth();
 
+  const graphWidth = width*0.65*(1/data.length);
+
   return (
     <Fragment>
-      <section>
+      <section
+        style={{width: graphWidth}}
+      >
         {data !== null
-          ? <Graph data={data} width={width*0.65} animate={false}/>
+          ? <ThingHistory
+              data={data}
+              width={graphWidth}
+              animate={true}
+            />
           : null
         }
       </section>
-      <Information onlySummary={true}/>
+      <Information onlySummary={false}/>
     </Fragment>
   )
 }

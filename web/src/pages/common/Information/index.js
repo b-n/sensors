@@ -1,6 +1,6 @@
 import React from 'react';
 import { interpolateRdYlGn } from 'd3-scale-chromatic'
-import { useSequentialScale } from '../../../hooks/graphScales'
+import { useSequentialScale } from '../../../hooks/'
 
 import './index.css';
 

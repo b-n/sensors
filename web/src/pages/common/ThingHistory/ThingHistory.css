@@ -1,0 +1,9 @@
+.gridline {
+  stroke: gainsboro;
+  stroke-width: 1px;
+}
+
+.iqr-line {
+  stroke: black;
+  stroke-width: 1px;
+}
