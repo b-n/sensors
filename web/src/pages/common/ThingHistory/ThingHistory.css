@@ -7,3 +7,12 @@
   stroke: black;
   stroke-width: 1px;
 }
+
+.line {
+  fill: none;
+}
+
+.point {
+  fill: black;
+  r: 1px;
+}

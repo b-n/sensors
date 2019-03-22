@@ -3,12 +3,13 @@ import { Collection } from '@potion/layout'
 import { Group, Circle } from '@potion/element'
 import { line as d3line, curveBundle } from 'd3-shape'
 
-const Line = ({x, y, data, chart, accessor = d => d.data, animate = false}) => {
+const Line = ({x, y, data, chart, accessor = d => d.data, animate = false, curveBeta}) => {
 
   const l = d3line()
     .x(x)
     .y(y)
-    .curve(curveBundle.beta(0.75));
+
+  if (curveBeta) l.curve(curveBundle.beta(curveBeta));
 
   const clipPath = `url(#${chart.clipPathId})`;
 

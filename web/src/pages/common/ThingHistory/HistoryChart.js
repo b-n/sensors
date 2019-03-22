@@ -2,15 +2,17 @@ import React from 'react'
 import { addHours, format } from 'date-fns'
 import { Text } from '@potion/element'
 
-import Chart, { AxisBottom, AxisLeft } from '../../../components/Chart'
+import Chart, { AxisBottom, AxisLeft, AxisRight } from '../../../components/Chart'
 import { useTimeScale } from '../../../hooks'
 
 import CO2Plot from './CO2Plot'
+import TempPlot from './TempPlot'
 
 const HistoryChart = ({
   width,
   co2Scale,
   co2ColorScale,
+  tempScale,
   date,
   data,
   animate
@@ -20,7 +22,6 @@ const HistoryChart = ({
         to = addHours(date, 20);
 
   const xScale = useTimeScale({ domain: [ from, to ] });
-  console.log(date);
   
   return (
     <Chart
@@ -28,6 +29,7 @@ const HistoryChart = ({
       height={200}
       marginLeft={50}
       marginTop={40}
+      marginRight={40}
     >
       <Text className="title" x={10} y={-5}>{format(date, 'ddd DD MMM')}</Text>
       <AxisLeft 
@@ -38,12 +40,21 @@ const HistoryChart = ({
         scale={xScale}
         gridlines
       />
+      <AxisRight
+        scale={tempScale}
+      />
+      <TempPlot
+        xScale={xScale}
+        yScale={tempScale}
+        date={date}
+        data={data}
+        animate={animate}
+      />
       <CO2Plot
         xScale={xScale}
         yScale={co2Scale}
         colorScale={co2ColorScale}
         data={data}
-        accessor={d => d.co2}
         animate={animate}
       />
     </Chart>

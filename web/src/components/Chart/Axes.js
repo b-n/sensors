@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Group, Line } from '@potion/element'
-import { axisBottom, axisLeft } from 'd3-axis'
+import { axisBottom, axisLeft, axisRight } from 'd3-axis'
 import { select } from 'd3-selection'
 import 'd3-transition' 
+
 const useTranslate = (pos) => {
   const [ translate, setTranslate ] = useState(pos);
   useEffect(() => {
@@ -89,7 +90,37 @@ const AxisLeft = ({
   )
 }
 
+const AxisRight = ({
+  chart,
+  scale,
+  gridlines,
+  className,
+  ticks,
+  tickFormat
+}) => {
+  const translate = useTranslate([chart.plotWidth,0]);
+
+  scale.range([chart.plotHeight, 0]);
+
+  const axisEl = useElem({
+    axisFn: axisRight,
+    scale,
+    ticks,
+    tickFormat
+  })
+
+  return (
+    <Group transform={{translate}} className={className}>
+      {gridlines && scale.ticks().map(tick => (
+        <Line key={tick} x1={0} x2={chart.plotWidth} y1={scale(tick)+0.5} y2={scale(tick)+0.5} className="gridline"/>
+      ))}
+      <g ref={axisEl}></g>
+    </Group>
+  )
+}
+
 export {
   AxisBottom,
-  AxisLeft
+  AxisLeft,
+  AxisRight
 }

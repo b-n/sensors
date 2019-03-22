@@ -38,5 +38,5 @@ const Chart = ({
 }
 
 export default Chart
-export { AxisBottom, AxisLeft } from './Axes'
+export { AxisBottom, AxisLeft, AxisRight } from './Axes'
 export { Line } from './Line'
