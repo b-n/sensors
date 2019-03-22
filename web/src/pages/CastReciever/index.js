@@ -25,7 +25,7 @@ const CastReciever = () => {
           ? <ThingHistory
               data={data}
               width={graphWidth}
-              animate={true}
+              animate={false}
             />
           : null
         }
