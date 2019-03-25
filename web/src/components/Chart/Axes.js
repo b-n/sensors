@@ -8,7 +8,7 @@ const useTranslate = (pos) => {
   const [ translate, setTranslate ] = useState(pos);
   useEffect(() => {
     setTranslate(pos)
-  }, ...pos)
+  }, pos)
 
   return translate
 }

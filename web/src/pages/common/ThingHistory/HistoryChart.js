@@ -57,8 +57,8 @@ const HistoryChart = ({
       <TempPlot
         xScale={xScale}
         yScale={tempScale}
-        date={date}
         data={data}
+        date={date}
         animate={animate}
       />
       <HumidityPlot

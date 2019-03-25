@@ -13,8 +13,7 @@
 }
 
 .point {
-  fill: black;
-  r: 1px;
+  r: 1.5px;
 }
 
 .scale-temp text {

@@ -19,14 +19,12 @@ const HumidityPlot = ({
   }))
     .filter(d => !isNaN(d.median) && d.median)
 
-  console.log(graphData);
-
   return (
     <Line
       x={d => xScale(d.date)}
       y={d => yScale(d.median)}
       chart={chart}
-      data={[{ key: date, color: '#9999ff', data: graphData }]}
+      data={[{ key: '' + date, color: '#9999ff', data: graphData }]}
       animate={animate}
       accessor={d => d.data}
     />

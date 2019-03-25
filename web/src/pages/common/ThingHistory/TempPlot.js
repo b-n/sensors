@@ -24,7 +24,7 @@ const TempPlot = ({
       x={d => xScale(d.date)}
       y={d => yScale(d.median)}
       chart={chart}
-      data={[{ key: date, color: '#ff9999', data: graphData }]}
+      data={[{ key: '' + date, color: '#ff9999', data: graphData }]}
       animate={animate}
       accessor={d => d.data}
     />
