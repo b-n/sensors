@@ -24,24 +24,24 @@ const Information = ({onlySummary}) => {
     <h1>Information</h1>
     {!onlySummary && (
       <>
-    <p>
-      The graph to the left measures the average Carbon Dioxide (CO<sub>2</sub>)
-      concentration near the sensor in the office. The sensor reads the values
-      in parts per million (ppm).
-    </p>
-    <p>
-      CO<sub>2</sub> is a colorless gas with a density about 60% higher than that
-      of dry air. The current global concentration is about 410 ppm, having risen
-      from pre-industrial levels of 280 ppm. CO<sub>2</sub> is produced by all
-      aerobic organisms (things that breathe air) when they metabolize
-      carbohydrates and lipids (fats etc) to produce energy by respiration.
-    </p>
-    <p>
-      CO<sub>2</sub> levels outside of buildings can range from 380-500ppm. At
-      very high concentrations (10.000ppm), CO<sub>2</sub> becomes toxic to
-      animals. Raising the concentration to 10.000ppm for several hours will
-      kill spider mites and whiteflies in a greenhouse.
-    </p>
+        <p>
+          The graph to the left measures the average Carbon Dioxide (CO<sub>2</sub>)
+          concentration near the sensor in the office. The sensor reads the values
+          in parts per million (ppm).
+        </p>
+        <p>
+          CO<sub>2</sub> is a colorless gas with a density about 60% higher than that
+          of dry air. The current global concentration is about 410 ppm, having risen
+          from pre-industrial levels of 280 ppm. CO<sub>2</sub> is produced by all
+          aerobic organisms (things that breathe air) when they metabolize
+          carbohydrates and lipids (fats etc) to produce energy by respiration.
+        </p>
+        <p>
+          CO<sub>2</sub> levels outside of buildings can range from 380-500ppm. At
+          very high concentrations (10.000ppm), CO<sub>2</sub> becomes toxic to
+          animals. Raising the concentration to 10.000ppm for several hours will
+          kill spider mites and whiteflies in a greenhouse.
+        </p>
       </>
     )}
     <p>

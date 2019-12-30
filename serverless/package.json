@@ -1,12 +1,16 @@
 {
-  "name": "serverless",
+  "name": "sensors",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "sideEffects": false,
+  "scripts": {
+    "start": "./node_modules/.bin/sls offline start",
+    "postinstall": "./node_modules/.bin/sls dynamodb install"
+  },
   "dependencies": {
-    "date-fns": "^2.0.0-alpha.27",
-    "date-fns-timezone": "^0.1.4"
+    "d3": "^5.9.2",
+    "date-fns": "^2.0.0-alpha.27"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
@@ -14,6 +18,7 @@
     "aws-sdk": "^2.398.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-source-map-support": "^2.0.1",
+    "serverless": "^1.40.0",
     "serverless-dynamodb-local": "0.2.30",
     "serverless-offline": "^4.5.0",
     "serverless-webpack": "^5.2.0",

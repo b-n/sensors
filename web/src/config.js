@@ -1,6 +1,6 @@
 const dev = {
-  apiEndpoint: 'http://localhost:4000/thing/',
-  //apiEndpoint: 'https://bnb7g0g5g1.execute-api.eu-central-1.amazonaws.com/dev/thing/',
+  //apiEndpoint: 'http://localhost:4000/thing/',
+  apiEndpoint: 'https://bnb7g0g5g1.execute-api.eu-central-1.amazonaws.com/dev/thing/',
   chromeCastAppId: '860368F7'
 }
 

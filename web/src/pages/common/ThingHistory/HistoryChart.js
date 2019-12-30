@@ -29,7 +29,7 @@ const HistoryChart = ({
     <Chart
       width={width}
       height={200}
-      marginLeft={50}
+      marginLeft={40}
       marginTop={40}
       marginRight={80}
     >

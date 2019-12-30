@@ -5,8 +5,11 @@ const dynamoTable = process.env.SETUP_TABLE;
 const getSetupData = thing => {
   return get({ thing }, dynamoTable)
     .then(result => {
-      if (!result.Count) return { thing, timeZone: 'UTC' }
-      return result.Items[0]
+      return {
+        thing,
+        timeZone: 'UTC',
+        ...result.Item
+      }
     });
 }
 

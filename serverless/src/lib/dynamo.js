@@ -14,10 +14,11 @@ AWS.config.update(process.env.IS_OFFLINE ? dev: prod);
 const docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 const defaultTable = process.env.DYNAMO_TABLE || '';
 
-const get = (key, table = defaultTable) => {
+const get = (key, table = defaultTable, params = {}) => {
   return docClient.get({
     TableName: table,
-    Key: key
+    Key: key,
+    ...params
   }).promise()
 }
 
@@ -35,10 +36,19 @@ const query = (params, table = defaultTable) => {
   }).promise();
 }
 
+const update = (key, table = defaultTable, params = {}) => {
+  return docClient.update({
+    TableName: table,
+    Key: key,
+    ...params
+  }).promise();
+}
+
 export {
   get,
   put,
-  query
+  query,
+  update
 };
 
 //todo update, query, scan, delete

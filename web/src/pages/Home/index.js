@@ -14,10 +14,10 @@ import './Home.css'
 const Home = () => {
   useCastSender({appId: env.chromeCastAppId});
   
-  const data1 = useSensorData('breather', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -8), 'YYYY-MM-DD')});
-  //const data2 = useSensorData('breather2', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -5), 'YYYY-MM-DD')});
+  const data1 = useSensorData('breather', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -4), 'YYYY-MM-DD')});
+  const data2 = useSensorData('breather2', { refreshDuration: 300000, fromDate: format(addDays(new Date(), -4), 'YYYY-MM-DD')});
   
-  const data = [ data1 ];
+  const data = [ data1, data2 ];
 
   const width = useWindowWidth();
 
@@ -29,6 +29,7 @@ const Home = () => {
         <section
           key={d.thing}
           style={{width: graphWidth}}
+          className="graph"
         >
           {d !== null
             ? <ThingHistory
